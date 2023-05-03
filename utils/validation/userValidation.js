@@ -19,8 +19,6 @@ exports.schemaKeys = joi.object({
   userType: joi.number().allow(0),
   isActive: joi.boolean(),
   isDeleted: joi.boolean(),
-  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
   contact: joi.object({
     country_code:joi.number().integer(),
     phone:joi.number().integer().max(10)
@@ -48,8 +46,6 @@ exports.updateSchemaKeys = joi.object({
   userType: joi.number().allow(0),
   isActive: joi.boolean(),
   isDeleted: joi.boolean(),
-  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
   contact: joi.object({
     country_code:joi.number().integer(),
     phone:joi.number().integer().max(10)
@@ -81,8 +77,6 @@ exports.findFilterKeys = joi.object({
       name: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
       isActive: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
       isDeleted: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
-      createdAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
-      updatedAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
       contact: joi.alternatives().try(joi.array().items(),joi.number().integer(),joi.object()),
       address: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
       zipcode: joi.alternatives().try(joi.array().items(),joi.number().integer(),joi.object()),

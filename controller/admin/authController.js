@@ -108,7 +108,7 @@ const register = async (req,res) =>{
                 return res.badRequest({message : "Insufficient request parameters! username and code is required."});
             }
             let where = {$or:[{email:params.username},{contact.phone:params.username}]}
-where.isDeleted = false;            let user = await dbService.findOne(User,where);
+where.isActive= true;where.isDeleted = false;            let user = await dbService.findOne(User,where);
             if (!user || !user.loginOTP.expireTime) {
                 return res.badRequest({message :"Invalid Code"});
             }
@@ -172,7 +172,7 @@ where.isDeleted = false;            let user = await dbService.findOne(User,wher
                 return res.badRequest({message : "Insufficient request parameters! email is required."});
             }
             let where = {email: params.email};
-where.isDeleted = false;            params.email = params.email.toString().toLowerCase();
+where.isActive= true;where.isDeleted = false;            params.email = params.email.toString().toLowerCase();
             let found = await dbService.findOne(User,where);
             if (!found) {
                 return res.recordNotFound();
@@ -206,7 +206,7 @@ where.isDeleted = false;            params.email = params.email.toString().toLow
             }
             const where = { 
                 'resetPasswordLink.code': params.otp,
-isDeleted: false,            }
+isActive: true,isDeleted: false,            }
             let found = await dbService.findOne(User, where);
             if (!found || !found.resetPasswordLink.expireTime) {
                 return res.failure({message :"Invalid OTP"});
@@ -235,7 +235,7 @@ isDeleted: false,            }
             }
             const where = { 
                 'resetPasswordLink.code': params.code,
-isDeleted: false,            }
+isActive: true,isDeleted: false,            }
             let found = await dbService.findOne(User, where);
             if (!found || !found.resetPasswordLink.expireTime) {
                 return res.failure({message :"Invalid Code"});

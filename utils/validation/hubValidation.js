@@ -12,10 +12,6 @@ const {
 exports.schemaKeys = joi.object({
   isDeleted: joi.boolean(),
   isActive: joi.boolean(),
-  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  addedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
-  updatedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   is_individual: joi.boolean(),
   Name: joi.string().allow(null).allow(''),
   zipcode: joi.number().integer().allow(0),
@@ -29,10 +25,6 @@ exports.schemaKeys = joi.object({
 exports.updateSchemaKeys = joi.object({
   isDeleted: joi.boolean(),
   isActive: joi.boolean(),
-  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  addedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
-  updatedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   is_individual: joi.boolean(),
   Name: joi.string().allow(null).allow(''),
   zipcode: joi.number().integer().allow(0),
@@ -51,10 +43,6 @@ exports.findFilterKeys = joi.object({
     keys.map(key => [key, joi.object({
       isDeleted: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
       isActive: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
-      createdAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
-      updatedAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
-      addedBy: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
-      updatedBy: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
       is_individual: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
       Name: joi.alternatives().try(joi.array().items(),joi.string(),joi.object()),
       zipcode: joi.alternatives().try(joi.array().items(),joi.number().integer(),joi.object()),

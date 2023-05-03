@@ -64,6 +64,12 @@ const schema = new Schema(
       }
     }
   }
+  ,{ 
+    timestamps: { 
+      createdAt: 'createdAt', 
+      updatedAt: 'updatedAt' 
+    } 
+  }
 );
 schema.index({ 'last_location':'2dsphere' },{
   'unique':false,

@@ -6,6 +6,9 @@
 const express =  require('express');
 const router =  express.Router();
 router.use('/dashboard/auth',require('./auth'));
+router.use(require('./notificationRoutes'));
+router.use(require('./addonsbankRoutes'));
+router.use(require('./purchaseRoutes'));
 router.use(require('./bannerRoutes'));
 router.use(require('./walletRoutes'));
 router.use(require('./complaintRoutes'));

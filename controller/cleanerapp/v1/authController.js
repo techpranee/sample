@@ -108,7 +108,7 @@ const register = async (req,res) =>{
                 return res.badRequest({message : "Insufficient request parameters! username and code is required."});
             }
             let where = {$or:[{email:params.username},{contact.phone:params.username}]}
-where.isDeleted = false;            let user = await dbService.findOne(User,where);
+where.isActive= true;where.isDeleted = false;            let user = await dbService.findOne(User,where);
             if (!user || !user.loginOTP.expireTime) {
                 return res.badRequest({message :"Invalid Code"});
             }

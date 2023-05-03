@@ -31,16 +31,16 @@ beforeAll(async function (){
     const hub = dbInstance.collection('hubs');
     insertedHub = await hub.insertOne({
       is_individual: true,
-      Name: 'Mamie Satterfield',
-      zipcode: 906,
+      Name: 'Rickey Quigley',
+      zipcode: 520,
       allowed_region_codes: [ {
         _id: false,
-        zipcode: 766 
+        zipcode: 422 
       } ],
-      contractValidTill: '2023-05-04T14:21:01.318Z',
-      owner: '642e7d508e3c1db5c700a1b7',
-      managers: { id: 'mesh' },
-      id: '642e7d508e3c1db5c700a1b8'
+      contractValidTill: '2023-08-30T22:41:30.953Z',
+      owner: '645205609400abcc72617682',
+      managers: { id: 'Configuration' },
+      id: '645205609400abcc72617683'
     });
   }
   catch (error) {
@@ -58,23 +58,23 @@ describe('POST /register -> if email and username is given', () => {
     let registeredUser = await request(app)
       .post('/userapp/auth/register')
       .send({
-        'password':'WxOv6UT_CSLWECL',
-        'email':'Ova_Zulauf@yahoo.com',
-        'name':'Elmer Christiansen',
+        'password':'jzADjA3740dNnc9',
+        'email':'Joesph86@yahoo.com',
+        'name':'Kerry Becker',
         'userType':authConstant.USER_TYPES.User,
         'contact':{
-          'country_code':615,
-          'phone':863
+          'country_code':673,
+          'phone':468
         },
         'address':{
-          'locality':'generate',
-          'city':'Forward',
-          'state':'Generic'
+          'locality':'Gateway',
+          'city':'deposit',
+          'state':'Adaptive'
         },
-        'zipcode':519,
+        'zipcode':125,
         'hub':insertedHub.insertedId,
-        'mobileNo':'(694) 659-2507',
-        'ssoAuth':{ 'googleId':'Investment' }
+        'mobileNo':'(030) 557-3695',
+        'ssoAuth':{ 'googleId':'Soap' }
       });
     expect(registeredUser.statusCode).toBe(200);
     expect(registeredUser.body.status).toBe('SUCCESS');
@@ -88,8 +88,8 @@ describe('POST /login -> if username and password is correct', () => {
       .post('/userapp/auth/login')
       .send(
         {
-          username: 'Ova_Zulauf@yahoo.com',
-          password: 'WxOv6UT_CSLWECL'
+          username: 'Joesph86@yahoo.com',
+          password: 'jzADjA3740dNnc9'
         }
       );
     expect(user.statusCode).toBe(200);
@@ -108,7 +108,7 @@ describe('POST /login -> if username is incorrect', () => {
       .send(
         {
           username: 'wrong.username',
-          password: 'WxOv6UT_CSLWECL'
+          password: 'jzADjA3740dNnc9'
         }
       );
 
@@ -123,7 +123,7 @@ describe('POST /login -> if password is incorrect', () => {
       .post('/userapp/auth/login')
       .send(
         {
-          username: 'Ova_Zulauf@yahoo.com',
+          username: 'Joesph86@yahoo.com',
           password: 'wrong@password'
         }
       );
@@ -170,7 +170,7 @@ describe('POST /forgot-password -> if email passed from request body is valid an
   test('should return success message', async () => {
     let user = await request(app)
       .post('/userapp/auth/forgot-password')
-      .send({ 'email':'Ova_Zulauf@yahoo.com', });
+      .send({ 'email':'Joesph86@yahoo.com', });
 
     expect(user.statusCode).toBe(200);
     expect(user.body.status).toBe('SUCCESS');
@@ -183,8 +183,8 @@ describe('POST /validate-otp -> OTP is sent in request body and OTP is correct',
       .post('/userapp/auth/login')
       .send(
         {
-          username: 'Ova_Zulauf@yahoo.com',
-          password: 'WxOv6UT_CSLWECL'
+          username: 'Joesph86@yahoo.com',
+          password: 'jzADjA3740dNnc9'
         }).then(login => () => {
         return request(app)
           .get(`/userapp/api/v1/user/${login.body.data.id}`)
@@ -232,8 +232,8 @@ describe('PUT /reset-password -> code is sent in request body and code is correc
       .post('/userapp/auth/login')
       .send(
         {
-          username: 'Ova_Zulauf@yahoo.com',
-          password: 'WxOv6UT_CSLWECL'
+          username: 'Joesph86@yahoo.com',
+          password: 'jzADjA3740dNnc9'
         }).then(login => () => {
         return request(app)
           .get(`/userapp/api/v1/user/${login.body.data.id}`)

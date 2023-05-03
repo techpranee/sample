@@ -30,17 +30,17 @@ beforeAll(async function (){
 
     const hub = dbInstance.collection('hubs');
     insertedHub = await hub.insertOne({
-      is_individual: false,
-      Name: 'Dr. Angel Sanford',
-      zipcode: 729,
+      is_individual: true,
+      Name: 'Dewey Keeling',
+      zipcode: 124,
       allowed_region_codes: [ {
         _id: false,
-        zipcode: 520 
+        zipcode: 874 
       } ],
-      contractValidTill: '2024-02-03T12:56:58.340Z',
-      owner: '642e7d508e3c1db5c700a293',
-      managers: { id: 'Borders' },
-      id: '642e7d508e3c1db5c700a294'
+      contractValidTill: '2023-07-13T08:49:54.133Z',
+      owner: '645205609400abcc7261778b',
+      managers: { id: 'Fantastic' },
+      id: '645205609400abcc7261778c'
     });
   }
   catch (error) {
@@ -58,23 +58,23 @@ describe('POST /register -> if email and username is given', () => {
     let registeredUser = await request(app)
       .post('/dashboard/auth/register')
       .send({
-        'password':'o_eQchFOd5oQbK9',
-        'email':'Jevon85@gmail.com',
-        'name':'Kerry Leffler',
+        'password':'gQwONmX8ZnLghIk',
+        'email':'Hoyt_Ernser93@gmail.com',
+        'name':'Ms. Keith Goodwin',
         'userType':authConstant.USER_TYPES.Hub,
         'contact':{
-          'country_code':490,
-          'phone':274
+          'country_code':319,
+          'phone':656
         },
         'address':{
-          'locality':'navigating',
-          'city':'Kids',
-          'state':'Arizona'
+          'locality':'background',
+          'city':'Baby',
+          'state':'Configuration'
         },
-        'zipcode':820,
+        'zipcode':339,
         'hub':insertedHub.insertedId,
-        'mobileNo':'(973) 719-6812',
-        'ssoAuth':{ 'googleId':'Forward' }
+        'mobileNo':'(811) 002-4252',
+        'ssoAuth':{ 'googleId':'reintermediate' }
       });
     expect(registeredUser.statusCode).toBe(200);
     expect(registeredUser.body.status).toBe('SUCCESS');
@@ -88,8 +88,8 @@ describe('POST /login -> if username and password is correct', () => {
       .post('/dashboard/auth/login')
       .send(
         {
-          username: 'Jevon85@gmail.com',
-          password: 'o_eQchFOd5oQbK9'
+          username: 'Hoyt_Ernser93@gmail.com',
+          password: 'gQwONmX8ZnLghIk'
         }
       );
     expect(user.statusCode).toBe(200);
@@ -108,7 +108,7 @@ describe('POST /login -> if username is incorrect', () => {
       .send(
         {
           username: 'wrong.username',
-          password: 'o_eQchFOd5oQbK9'
+          password: 'gQwONmX8ZnLghIk'
         }
       );
 
@@ -123,7 +123,7 @@ describe('POST /login -> if password is incorrect', () => {
       .post('/dashboard/auth/login')
       .send(
         {
-          username: 'Jevon85@gmail.com',
+          username: 'Hoyt_Ernser93@gmail.com',
           password: 'wrong@password'
         }
       );
@@ -170,7 +170,7 @@ describe('POST /forgot-password -> if email passed from request body is valid an
   test('should return success message', async () => {
     let user = await request(app)
       .post('/dashboard/auth/forgot-password')
-      .send({ 'email':'Jevon85@gmail.com', });
+      .send({ 'email':'Hoyt_Ernser93@gmail.com', });
 
     expect(user.statusCode).toBe(200);
     expect(user.body.status).toBe('SUCCESS');
@@ -183,8 +183,8 @@ describe('POST /validate-otp -> OTP is sent in request body and OTP is correct',
       .post('/dashboard/auth/login')
       .send(
         {
-          username: 'Jevon85@gmail.com',
-          password: 'o_eQchFOd5oQbK9'
+          username: 'Hoyt_Ernser93@gmail.com',
+          password: 'gQwONmX8ZnLghIk'
         }).then(login => () => {
         return request(app)
           .get(`/dashboard/api/v1/user/${login.body.data.id}`)
@@ -232,8 +232,8 @@ describe('PUT /reset-password -> code is sent in request body and code is correc
       .post('/dashboard/auth/login')
       .send(
         {
-          username: 'Jevon85@gmail.com',
-          password: 'o_eQchFOd5oQbK9'
+          username: 'Hoyt_Ernser93@gmail.com',
+          password: 'gQwONmX8ZnLghIk'
         }).then(login => () => {
         return request(app)
           .get(`/dashboard/api/v1/user/${login.body.data.id}`)

@@ -64,6 +64,7 @@ async function uniqueValidation (Model,data){
       { 'contact.phone':data['contact.phone'] },
     );
   }
+  filter.isActive = true;
   filter.isDeleted = false;
   let found = await dbService.findOne(Model,filter);
   if (found){
@@ -259,6 +260,7 @@ const checkUniqueFieldsInDatabase = async (model, fieldsToCheck, data, operation
         { 'email':data['email'] },
         { 'contact.phone':data['email'] },
       );
+      loginFieldFilter.isActive = true;
       loginFieldFilter.isDeleted = false;
       let found = await dbService.findOne(model,loginFieldFilter);
       if (found){
@@ -275,6 +277,7 @@ const checkUniqueFieldsInDatabase = async (model, fieldsToCheck, data, operation
         { 'email':data['contact.phone'] },
         { 'contact.phone':data['contact.phone'] },
       );
+      loginFieldFilter.isActive = true;
       loginFieldFilter.isDeleted = false;
       let found = await dbService.findOne(model,loginFieldFilter);
       if (found){

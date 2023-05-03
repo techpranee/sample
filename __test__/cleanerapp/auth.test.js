@@ -30,17 +30,17 @@ beforeAll(async function (){
 
     const hub = dbInstance.collection('hubs');
     insertedHub = await hub.insertOne({
-      is_individual: false,
-      Name: 'Miss Domingo Bernhard',
-      zipcode: 617,
+      is_individual: true,
+      Name: 'Georgia Gerlach',
+      zipcode: 946,
       allowed_region_codes: [ {
         _id: false,
-        zipcode: 194 
+        zipcode: 723 
       } ],
-      contractValidTill: '2023-10-28T07:02:15.090Z',
-      owner: '642e7d508e3c1db5c700a0db',
-      managers: { id: 'program' },
-      id: '642e7d508e3c1db5c700a0dc'
+      contractValidTill: '2024-04-15T07:05:51.890Z',
+      owner: '645205609400abcc72617579',
+      managers: { id: 'York' },
+      id: '645205609400abcc7261757a'
     });
   }
   catch (error) {
@@ -58,23 +58,23 @@ describe('POST /register -> if email and username is given', () => {
     let registeredUser = await request(app)
       .post('/cleanerapp/auth/register')
       .send({
-        'password':'VfPlywkrevRAOu_',
-        'email':'Antonina.Hackett@gmail.com',
-        'name':'Dale Mraz',
+        'password':'1OyO1KAs6P0tq8n',
+        'email':'Bette.Hagenes@hotmail.com',
+        'name':'Darrell Cremin',
         'userType':authConstant.USER_TYPES.Cleaner,
         'contact':{
-          'country_code':273,
-          'phone':684
+          'country_code':951,
+          'phone':249
         },
         'address':{
-          'locality':'Wooden',
-          'city':'Baby',
-          'state':'card'
+          'locality':'client-driven',
+          'city':'Dakota',
+          'state':'copy'
         },
-        'zipcode':126,
+        'zipcode':439,
         'hub':insertedHub.insertedId,
-        'mobileNo':'(055) 655-7809',
-        'ssoAuth':{ 'googleId':'Zimbabwe' }
+        'mobileNo':'(416) 838-1285',
+        'ssoAuth':{ 'googleId':'Highway' }
       });
     expect(registeredUser.statusCode).toBe(200);
     expect(registeredUser.body.status).toBe('SUCCESS');
@@ -88,8 +88,8 @@ describe('POST /login -> if username and password is correct', () => {
       .post('/cleanerapp/auth/login')
       .send(
         {
-          username: 'Antonina.Hackett@gmail.com',
-          password: 'VfPlywkrevRAOu_'
+          username: 'Bette.Hagenes@hotmail.com',
+          password: '1OyO1KAs6P0tq8n'
         }
       );
     expect(user.statusCode).toBe(200);
@@ -108,7 +108,7 @@ describe('POST /login -> if username is incorrect', () => {
       .send(
         {
           username: 'wrong.username',
-          password: 'VfPlywkrevRAOu_'
+          password: '1OyO1KAs6P0tq8n'
         }
       );
 
@@ -123,7 +123,7 @@ describe('POST /login -> if password is incorrect', () => {
       .post('/cleanerapp/auth/login')
       .send(
         {
-          username: 'Antonina.Hackett@gmail.com',
+          username: 'Bette.Hagenes@hotmail.com',
           password: 'wrong@password'
         }
       );
@@ -170,7 +170,7 @@ describe('POST /forgot-password -> if email passed from request body is valid an
   test('should return success message', async () => {
     let user = await request(app)
       .post('/cleanerapp/auth/forgot-password')
-      .send({ 'email':'Antonina.Hackett@gmail.com', });
+      .send({ 'email':'Bette.Hagenes@hotmail.com', });
 
     expect(user.statusCode).toBe(200);
     expect(user.body.status).toBe('SUCCESS');
@@ -183,8 +183,8 @@ describe('POST /validate-otp -> OTP is sent in request body and OTP is correct',
       .post('/cleanerapp/auth/login')
       .send(
         {
-          username: 'Antonina.Hackett@gmail.com',
-          password: 'VfPlywkrevRAOu_'
+          username: 'Bette.Hagenes@hotmail.com',
+          password: '1OyO1KAs6P0tq8n'
         }).then(login => () => {
         return request(app)
           .get(`/cleanerapp/api/v1/user/${login.body.data.id}`)
@@ -232,8 +232,8 @@ describe('PUT /reset-password -> code is sent in request body and code is correc
       .post('/cleanerapp/auth/login')
       .send(
         {
-          username: 'Antonina.Hackett@gmail.com',
-          password: 'VfPlywkrevRAOu_'
+          username: 'Bette.Hagenes@hotmail.com',
+          password: '1OyO1KAs6P0tq8n'
         }).then(login => () => {
         return request(app)
           .get(`/cleanerapp/api/v1/user/${login.body.data.id}`)

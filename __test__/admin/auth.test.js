@@ -30,17 +30,17 @@ beforeAll(async function (){
 
     const hub = dbInstance.collection('hubs');
     insertedHub = await hub.insertOne({
-      is_individual: true,
-      Name: 'Rochelle Wiegand',
-      zipcode: 732,
+      is_individual: false,
+      Name: 'Josefina Kirlin',
+      zipcode: 451,
       allowed_region_codes: [ {
         _id: false,
-        zipcode: 247 
+        zipcode: 580 
       } ],
-      contractValidTill: '2023-09-06T03:28:10.182Z',
-      owner: '642e7d508e3c1db5c700a36f',
-      managers: { id: 'withdrawal' },
-      id: '642e7d508e3c1db5c700a370'
+      contractValidTill: '2023-05-25T20:04:20.800Z',
+      owner: '645205609400abcc72617894',
+      managers: { id: 'Handmade' },
+      id: '645205609400abcc72617895'
     });
   }
   catch (error) {
@@ -58,23 +58,23 @@ describe('POST /register -> if email and username is given', () => {
     let registeredUser = await request(app)
       .post('/admin/auth/register')
       .send({
-        'password':'8jXguB4jeO_cKMY',
-        'email':'Vanessa_Smith@hotmail.com',
-        'name':'Shelia Dooley',
+        'password':'wYz12yxhEG8ZWoS',
+        'email':'Josefina.Dooley@hotmail.com',
+        'name':'Shari Hills',
         'userType':authConstant.USER_TYPES.Admin,
         'contact':{
-          'country_code':922,
-          'phone':805
+          'country_code':707,
+          'phone':772
         },
         'address':{
-          'locality':'Small',
-          'city':'Tuna',
-          'state':'explicit'
+          'locality':'Bedfordshire',
+          'city':'Alaska',
+          'state':'Frozen'
         },
-        'zipcode':285,
+        'zipcode':647,
         'hub':insertedHub.insertedId,
-        'mobileNo':'(582) 854-6901',
-        'ssoAuth':{ 'googleId':'implement' }
+        'mobileNo':'(180) 140-5189',
+        'ssoAuth':{ 'googleId':'Cheese' }
       });
     expect(registeredUser.statusCode).toBe(200);
     expect(registeredUser.body.status).toBe('SUCCESS');
@@ -88,8 +88,8 @@ describe('POST /login -> if username and password is correct', () => {
       .post('/admin/auth/login')
       .send(
         {
-          username: 'Vanessa_Smith@hotmail.com',
-          password: '8jXguB4jeO_cKMY'
+          username: 'Josefina.Dooley@hotmail.com',
+          password: 'wYz12yxhEG8ZWoS'
         }
       );
     expect(user.statusCode).toBe(200);
@@ -108,7 +108,7 @@ describe('POST /login -> if username is incorrect', () => {
       .send(
         {
           username: 'wrong.username',
-          password: '8jXguB4jeO_cKMY'
+          password: 'wYz12yxhEG8ZWoS'
         }
       );
 
@@ -123,7 +123,7 @@ describe('POST /login -> if password is incorrect', () => {
       .post('/admin/auth/login')
       .send(
         {
-          username: 'Vanessa_Smith@hotmail.com',
+          username: 'Josefina.Dooley@hotmail.com',
           password: 'wrong@password'
         }
       );
@@ -170,7 +170,7 @@ describe('POST /forgot-password -> if email passed from request body is valid an
   test('should return success message', async () => {
     let user = await request(app)
       .post('/admin/auth/forgot-password')
-      .send({ 'email':'Vanessa_Smith@hotmail.com', });
+      .send({ 'email':'Josefina.Dooley@hotmail.com', });
 
     expect(user.statusCode).toBe(200);
     expect(user.body.status).toBe('SUCCESS');
@@ -183,8 +183,8 @@ describe('POST /validate-otp -> OTP is sent in request body and OTP is correct',
       .post('/admin/auth/login')
       .send(
         {
-          username: 'Vanessa_Smith@hotmail.com',
-          password: '8jXguB4jeO_cKMY'
+          username: 'Josefina.Dooley@hotmail.com',
+          password: 'wYz12yxhEG8ZWoS'
         }).then(login => () => {
         return request(app)
           .get(`/admin/user/${login.body.data.id}`)
@@ -232,8 +232,8 @@ describe('PUT /reset-password -> code is sent in request body and code is correc
       .post('/admin/auth/login')
       .send(
         {
-          username: 'Vanessa_Smith@hotmail.com',
-          password: '8jXguB4jeO_cKMY'
+          username: 'Josefina.Dooley@hotmail.com',
+          password: 'wYz12yxhEG8ZWoS'
         }).then(login => () => {
         return request(app)
           .get(`/admin/user/${login.body.data.id}`)

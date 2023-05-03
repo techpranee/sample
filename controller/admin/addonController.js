@@ -8,6 +8,7 @@ const addonSchemaKey = require('../../utils/validation/addonValidation');
 const validation = require('../../utils/validateRequest');
 const dbService = require('../../utils/dbService');
 const ObjectId = require('mongodb').ObjectId;
+const deleteDependentService = require('../../utils/deleteDependent');
 const utils = require('../../utils/common');
    
 /**
@@ -221,6 +222,7 @@ const partialUpdateAddon = async (req,res) => {
     return res.internalServerError({ message:error.message });
   }
 };
+    
 /**
  * @description : deactivate document of Addon from table by id;
  * @param {Object} req : request including id in request params.
@@ -232,9 +234,9 @@ const softDeleteAddon = async (req,res) => {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    let query = { _id:req.params.id };
+    const query = { _id:req.params.id };
     const updateBody = { isDeleted: true, };
-    let updatedAddon = await dbService.updateOne(Addon, query, updateBody);
+    let updatedAddon = await deleteDependentService.softDeleteAddon(query, updateBody);
     if (!updatedAddon){
       return res.recordNotFound();
     }
@@ -243,7 +245,7 @@ const softDeleteAddon = async (req,res) => {
     return res.internalServerError({ message:error.message }); 
   }
 };
-
+    
 /**
  * @description : delete document of Addon from table.
  * @param {Object} req : request including id as req param.
@@ -251,20 +253,24 @@ const softDeleteAddon = async (req,res) => {
  * @return {Object} : deleted Addon. {status, message, data}
  */
 const deleteAddon = async (req,res) => {
-  try { 
+  try {
     if (!req.params.id){
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const deletedAddon = await dbService.deleteOne(Addon, query);
+    let deletedAddon;
+    if (req.body.isWarning) { 
+      deletedAddon = await deleteDependentService.countAddon(query);
+    } else {
+      deletedAddon = await deleteDependentService.deleteAddon(query);
+    }
     if (!deletedAddon){
       return res.recordNotFound();
     }
     return res.success({ data :deletedAddon });
-        
   }
   catch (error){
-    return res.internalServerError({ message:error.message });
+    return res.internalServerError({ message:error.message }); 
   }
 };
     
@@ -281,15 +287,22 @@ const deleteManyAddon = async (req, res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const deletedAddon = await dbService.deleteMany(Addon,query);
+    let deletedAddon;
+    if (req.body.isWarning) {
+      deletedAddon = await deleteDependentService.countAddon(query);
+    }
+    else {
+      deletedAddon = await deleteDependentService.deleteAddon(query);
+    }
     if (!deletedAddon){
       return res.recordNotFound();
     }
-    return res.success({ data :{ count :deletedAddon } });
+    return res.success({ data :deletedAddon });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }
 };
+    
 /**
  * @description : deactivate multiple documents of Addon from table by ids;
  * @param {Object} req : request including array of ids in request body.
@@ -304,12 +317,11 @@ const softDeleteManyAddon = async (req,res) => {
     }
     const query = { _id:{ $in:ids } };
     const updateBody = { isDeleted: true, };
-    let updatedAddon = await dbService.updateMany(Addon,query, updateBody);
+    let updatedAddon = await deleteDependentService.softDeleteAddon(query, updateBody);
     if (!updatedAddon) {
       return res.recordNotFound();
     }
-    return res.success({ data:{ count :updatedAddon } });
-        
+    return res.success({ data:updatedAddon });
   } catch (error){
     return res.internalServerError({ message:error.message }); 
   }

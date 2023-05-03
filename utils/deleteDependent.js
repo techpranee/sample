@@ -3,6 +3,9 @@
   * @description :: exports deleteDependent service for project.
 */
 
+let Notification = require("../model/notification")
+let Addonsbank = require("../model/addonsbank")
+let Purchase = require("../model/purchase")
 let Banner = require("../model/banner")
 let Wallet = require("../model/wallet")
 let Complaint = require("../model/complaint")
@@ -22,6 +25,46 @@ let ProjectRoute = require("../model/projectRoute")
 let RouteRole = require("../model/routeRole")
 let UserRole = require("../model/userRole")
 let dbService = require(".//dbService");
+
+const deleteNotification = async (filter) =>{
+    try{
+            let response  = await dbService.deleteMany(Notification,filter);
+            return response;
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
+const deleteAddonsbank = async (filter) =>{
+    try{
+            let response  = await dbService.deleteMany(Addonsbank,filter);
+            return response;
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
+const deletePurchase = async (filter) =>{
+    try{
+            let purchase = await dbService.findMany(Purchase,filter);
+            if(purchase && purchase.length){
+                purchase = purchase.map((obj) => obj.id);
+
+
+                const addonsbankFilter = {$or: [{purchaseId : {$in : purchase }}]}
+                    const addonsbankCnt=await dbService.deleteMany(Addonsbank,addonsbankFilter);
+
+            let deleted  = await dbService.deleteMany(Purchase,filter);
+            let response = {addonsbank :addonsbankCnt,}
+            return response; 
+            }else{
+                return {  purchase : 0}
+            }
+
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
 
 const deleteBanner = async (filter) =>{
     try{
@@ -65,8 +108,21 @@ const deleteComplaint = async (filter) =>{
 
 const deleteAddon = async (filter) =>{
     try{
-            let response  = await dbService.deleteMany(Addon,filter);
-            return response;
+            let addon = await dbService.findMany(Addon,filter);
+            if(addon && addon.length){
+                addon = addon.map((obj) => obj.id);
+
+
+                const addonsbankFilter = {$or: [{addonId : {$in : addon }}]}
+                    const addonsbankCnt=await dbService.deleteMany(Addonsbank,addonsbankFilter);
+
+            let deleted  = await dbService.deleteMany(Addon,filter);
+            let response = {addonsbank :addonsbankCnt,}
+            return response; 
+            }else{
+                return {  addon : 0}
+            }
+
     }catch(error){
         throw new Error(error.message);
     }
@@ -126,11 +182,14 @@ const deletePayment = async (filter) =>{
                 payment = payment.map((obj) => obj.id);
 
 
+                const purchaseFilter = {$or: [{paymentId : {$in : payment }}]}
+                    const purchaseCnt=await dbService.deleteMany(Purchase,purchaseFilter);
+
                 const subscriptionFilter = {$or: [{paymentId : {$in : payment }}]}
                     const subscriptionCnt=await dbService.deleteMany(Subscription,subscriptionFilter);
 
             let deleted  = await dbService.deleteMany(Payment,filter);
-            let response = {subscription :subscriptionCnt,}
+            let response = {purchase :purchaseCnt,subscription :subscriptionCnt,}
             return response; 
             }else{
                 return {  payment : 0}
@@ -238,6 +297,15 @@ const deleteUser = async (filter) =>{
                 user = user.map((obj) => obj.id);
 
 
+                const notificationFilter = {$or: [{user : {$in : user }},{addedBy : {$in : user }},{updatedBy : {$in : user }}]}
+                    const notificationCnt=await dbService.deleteMany(Notification,notificationFilter);
+
+                const addonsbankFilter = {$or: [{addedBy : {$in : user }},{updatedBy : {$in : user }},{user : {$in : user }}]}
+                    const addonsbankCnt=await dbService.deleteMany(Addonsbank,addonsbankFilter);
+
+                const purchaseFilter = {$or: [{user : {$in : user }},{addedBy : {$in : user }},{updatedBy : {$in : user }}]}
+                    const purchaseCnt=await dbService.deleteMany(Purchase,purchaseFilter);
+
                 const walletFilter = {$or: [{addedBy : {$in : user }},{updatedBy : {$in : user }},{user : {$in : user }}]}
                     const walletCnt=await dbService.deleteMany(Wallet,walletFilter);
 
@@ -278,7 +346,7 @@ const deleteUser = async (filter) =>{
                     const userRoleCnt=await dbService.deleteMany(UserRole,userRoleFilter);
 
             let deleted  = await dbService.deleteMany(User,filter);
-            let response = {wallet :walletCnt,complaint :complaintCnt,wash :washCnt,payment :paymentCnt,subscription :subscriptionCnt,hub :hubCnt,cleaner :cleanerCnt,car :carCnt,userTokens :userTokensCnt,role :roleCnt,projectRoute :projectRouteCnt,routeRole :routeRoleCnt,userRole :userRoleCnt,}
+            let response = {notification :notificationCnt,addonsbank :addonsbankCnt,purchase :purchaseCnt,wallet :walletCnt,complaint :complaintCnt,wash :washCnt,payment :paymentCnt,subscription :subscriptionCnt,hub :hubCnt,cleaner :cleanerCnt,car :carCnt,userTokens :userTokensCnt,role :roleCnt,projectRoute :projectRouteCnt,routeRole :routeRoleCnt,userRole :userRoleCnt,}
             return response; 
             }else{
                 return {  user : 0}
@@ -372,6 +440,43 @@ const deleteUserRole = async (filter) =>{
     }
 }
 
+const countNotification = async (filter) =>{
+    try{
+        const notificationCnt =  await dbService.count(Notification,filter);
+        return {notification : notificationCnt}
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
+const countAddonsbank = async (filter) =>{
+    try{
+        const addonsbankCnt =  await dbService.count(Addonsbank,filter);
+        return {addonsbank : addonsbankCnt}
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
+const countPurchase = async (filter) =>{
+    try{
+        let purchase = await dbService.findMany(Purchase,filter);
+        if(purchase && purchase.length){
+            purchase = purchase.map((obj) => obj.id);
+
+                const addonsbankFilter = {$or: [{purchaseId : {$in : purchase }}]}
+                     const addonsbankCnt =  await dbService.count(Addonsbank,addonsbankFilter);
+
+            let response = {addonsbank : addonsbankCnt,}
+            return response; 
+        }else{
+            return {  purchase : 0}
+        }
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
 const countBanner = async (filter) =>{
     try{
         const bannerCnt =  await dbService.count(Banner,filter);
@@ -411,8 +516,18 @@ const countComplaint = async (filter) =>{
 
 const countAddon = async (filter) =>{
     try{
-        const addonCnt =  await dbService.count(Addon,filter);
-        return {addon : addonCnt}
+        let addon = await dbService.findMany(Addon,filter);
+        if(addon && addon.length){
+            addon = addon.map((obj) => obj.id);
+
+                const addonsbankFilter = {$or: [{addonId : {$in : addon }}]}
+                     const addonsbankCnt =  await dbService.count(Addonsbank,addonsbankFilter);
+
+            let response = {addonsbank : addonsbankCnt,}
+            return response; 
+        }else{
+            return {  addon : 0}
+        }
     }catch(error){
         throw new Error(error.message);
     }
@@ -465,10 +580,13 @@ const countPayment = async (filter) =>{
         if(payment && payment.length){
             payment = payment.map((obj) => obj.id);
 
+                const purchaseFilter = {$or: [{paymentId : {$in : payment }}]}
+                     const purchaseCnt =  await dbService.count(Purchase,purchaseFilter);
+
                 const subscriptionFilter = {$or: [{paymentId : {$in : payment }}]}
                      const subscriptionCnt =  await dbService.count(Subscription,subscriptionFilter);
 
-            let response = {subscription : subscriptionCnt,}
+            let response = {purchase : purchaseCnt,subscription : subscriptionCnt,}
             return response; 
         }else{
             return {  payment : 0}
@@ -565,6 +683,15 @@ const countUser = async (filter) =>{
         if(user && user.length){
             user = user.map((obj) => obj.id);
 
+                const notificationFilter = {$or: [{user : {$in : user }},{addedBy : {$in : user }},{updatedBy : {$in : user }}]}
+                     const notificationCnt =  await dbService.count(Notification,notificationFilter);
+
+                const addonsbankFilter = {$or: [{addedBy : {$in : user }},{updatedBy : {$in : user }},{user : {$in : user }}]}
+                     const addonsbankCnt =  await dbService.count(Addonsbank,addonsbankFilter);
+
+                const purchaseFilter = {$or: [{user : {$in : user }},{addedBy : {$in : user }},{updatedBy : {$in : user }}]}
+                     const purchaseCnt =  await dbService.count(Purchase,purchaseFilter);
+
                 const walletFilter = {$or: [{addedBy : {$in : user }},{updatedBy : {$in : user }},{user : {$in : user }}]}
                      const walletCnt =  await dbService.count(Wallet,walletFilter);
 
@@ -604,7 +731,7 @@ const countUser = async (filter) =>{
                 const userRoleFilter = {$or: [{userId : {$in : user }},{addedBy : {$in : user }},{updatedBy : {$in : user }}]}
                      const userRoleCnt =  await dbService.count(UserRole,userRoleFilter);
 
-            let response = {wallet : walletCnt,complaint : complaintCnt,wash : washCnt,payment : paymentCnt,subscription : subscriptionCnt,hub : hubCnt,cleaner : cleanerCnt,car : carCnt,userTokens : userTokensCnt,role : roleCnt,projectRoute : projectRouteCnt,routeRole : routeRoleCnt,userRole : userRoleCnt,}
+            let response = {notification : notificationCnt,addonsbank : addonsbankCnt,purchase : purchaseCnt,wallet : walletCnt,complaint : complaintCnt,wash : washCnt,payment : paymentCnt,subscription : subscriptionCnt,hub : hubCnt,cleaner : cleanerCnt,car : carCnt,userTokens : userTokensCnt,role : roleCnt,projectRoute : projectRouteCnt,routeRole : routeRoleCnt,userRole : userRoleCnt,}
             return response; 
         }else{
             return {  user : 0}
@@ -691,6 +818,44 @@ const countUserRole = async (filter) =>{
     }
 }
 
+const softDeleteNotification = async (filter,updateBody) =>{  
+      try{
+        const notificationCnt =  await dbService.updateMany(Notification,filter);
+        return {notification : notificationCnt}
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
+const softDeleteAddonsbank = async (filter,updateBody) =>{  
+      try{
+        const addonsbankCnt =  await dbService.updateMany(Addonsbank,filter);
+        return {addonsbank : addonsbankCnt}
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
+const softDeletePurchase = async (filter,updateBody) =>{  
+      try{
+        let purchase = await dbService.findMany(Purchase,filter, {id:1});
+        if(purchase.length){
+            purchase = purchase.map((obj) => obj.id);
+
+                    const addonsbankFilter = {"$or": [{purchaseId : {"$in" : purchase }}]}
+                     const addonsbankCnt = await dbService.updateMany(Addonsbank,addonsbankFilter,updateBody);
+              let updated = await dbService.updateMany(Purchase,filter,updateBody);
+
+            let response = {addonsbank :addonsbankCnt,}
+            return response;
+        }else{
+            return {  purchase : 0}
+        }
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
 const softDeleteBanner = async (filter,updateBody) =>{  
       try{
         const bannerCnt =  await dbService.updateMany(Banner,filter);
@@ -731,8 +896,19 @@ const softDeleteComplaint = async (filter,updateBody) =>{
 
 const softDeleteAddon = async (filter,updateBody) =>{  
       try{
-        const addonCnt =  await dbService.updateMany(Addon,filter);
-        return {addon : addonCnt}
+        let addon = await dbService.findMany(Addon,filter, {id:1});
+        if(addon.length){
+            addon = addon.map((obj) => obj.id);
+
+                    const addonsbankFilter = {"$or": [{addonId : {"$in" : addon }}]}
+                     const addonsbankCnt = await dbService.updateMany(Addonsbank,addonsbankFilter,updateBody);
+              let updated = await dbService.updateMany(Addon,filter,updateBody);
+
+            let response = {addonsbank :addonsbankCnt,}
+            return response;
+        }else{
+            return {  addon : 0}
+        }
     }catch(error){
         throw new Error(error.message);
     }
@@ -787,11 +963,14 @@ const softDeletePayment = async (filter,updateBody) =>{
         if(payment.length){
             payment = payment.map((obj) => obj.id);
 
+                    const purchaseFilter = {"$or": [{paymentId : {"$in" : payment }}]}
+                     const purchaseCnt = await dbService.updateMany(Purchase,purchaseFilter,updateBody);
+
                     const subscriptionFilter = {"$or": [{paymentId : {"$in" : payment }}]}
                      const subscriptionCnt = await dbService.updateMany(Subscription,subscriptionFilter,updateBody);
               let updated = await dbService.updateMany(Payment,filter,updateBody);
 
-            let response = {subscription :subscriptionCnt,}
+            let response = {purchase :purchaseCnt,subscription :subscriptionCnt,}
             return response;
         }else{
             return {  payment : 0}
@@ -891,6 +1070,15 @@ const softDeleteUser = async (filter,updateBody) =>{
         if(user.length){
             user = user.map((obj) => obj.id);
 
+                    const notificationFilter = {"$or": [{user : {"$in" : user }},{addedBy : {"$in" : user }},{updatedBy : {"$in" : user }}]}
+                     const notificationCnt = await dbService.updateMany(Notification,notificationFilter,updateBody);
+
+                    const addonsbankFilter = {"$or": [{addedBy : {"$in" : user }},{updatedBy : {"$in" : user }},{user : {"$in" : user }}]}
+                     const addonsbankCnt = await dbService.updateMany(Addonsbank,addonsbankFilter,updateBody);
+
+                    const purchaseFilter = {"$or": [{user : {"$in" : user }},{addedBy : {"$in" : user }},{updatedBy : {"$in" : user }}]}
+                     const purchaseCnt = await dbService.updateMany(Purchase,purchaseFilter,updateBody);
+
                     const walletFilter = {"$or": [{addedBy : {"$in" : user }},{updatedBy : {"$in" : user }},{user : {"$in" : user }}]}
                      const walletCnt = await dbService.updateMany(Wallet,walletFilter,updateBody);
 
@@ -931,7 +1119,7 @@ const softDeleteUser = async (filter,updateBody) =>{
                      const userRoleCnt = await dbService.updateMany(UserRole,userRoleFilter,updateBody);
               let updated = await dbService.updateMany(User,filter,updateBody);
 
-            let response = {wallet :walletCnt,complaint :complaintCnt,wash :washCnt,payment :paymentCnt,subscription :subscriptionCnt,hub :hubCnt,cleaner :cleanerCnt,car :carCnt,userTokens :userTokensCnt,role :roleCnt,projectRoute :projectRouteCnt,routeRole :routeRoleCnt,userRole :userRoleCnt,}
+            let response = {notification :notificationCnt,addonsbank :addonsbankCnt,purchase :purchaseCnt,wallet :walletCnt,complaint :complaintCnt,wash :washCnt,payment :paymentCnt,subscription :subscriptionCnt,hub :hubCnt,cleaner :cleanerCnt,car :carCnt,userTokens :userTokensCnt,role :roleCnt,projectRoute :projectRouteCnt,routeRole :routeRoleCnt,userRole :userRoleCnt,}
             return response;
         }else{
             return {  user : 0}
@@ -1023,6 +1211,9 @@ const softDeleteUserRole = async (filter,updateBody) =>{
 
 
 module.exports ={
+    deleteNotification,
+    deleteAddonsbank,
+    deletePurchase,
     deleteBanner,
     deleteWallet,
     deleteComplaint,
@@ -1041,6 +1232,9 @@ module.exports ={
     deleteProjectRoute,
     deleteRouteRole,
     deleteUserRole,
+    countNotification,
+    countAddonsbank,
+    countPurchase,
     countBanner,
     countWallet,
     countComplaint,
@@ -1059,6 +1253,9 @@ module.exports ={
     countProjectRoute,
     countRouteRole,
     countUserRole,
+    softDeleteNotification,
+    softDeleteAddonsbank,
+    softDeletePurchase,
     softDeleteBanner,
     softDeleteWallet,
     softDeleteComplaint,

@@ -48,9 +48,16 @@ const schema = new Schema(
 
     data:{ type:Schema.Types.Mixed }
   }
+  ,{ 
+    timestamps: { 
+      createdAt: 'createdAt', 
+      updatedAt: 'updatedAt' 
+    } 
+  }
 );
 schema.pre('save', async function (next) {
   this.isDeleted = false;
+  this.isActive = true;
   next();
 });
 
@@ -59,6 +66,7 @@ schema.pre('insertMany', async function (next, docs) {
     for (let index = 0; index < docs.length; index++) {
       const element = docs[index];
       element.isDeleted = false;
+      element.isActive = true;
     }
   }
   next();

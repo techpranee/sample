@@ -12,10 +12,6 @@ const {
 exports.schemaKeys = joi.object({
   isDeleted: joi.boolean(),
   isActive: joi.boolean(),
-  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  addedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
-  updatedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   carId: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   cleanerId: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   hub: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
@@ -31,10 +27,6 @@ exports.schemaKeys = joi.object({
 exports.updateSchemaKeys = joi.object({
   isDeleted: joi.boolean(),
   isActive: joi.boolean(),
-  createdAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  updatedAt: joi.date().options({ convert: true }).allow(null).allow(''),
-  addedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
-  updatedBy: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   carId: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   cleanerId: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
   hub: joi.string().regex(/^[0-9a-fA-F]{24}$/).allow(null).allow(''),
@@ -55,10 +47,6 @@ exports.findFilterKeys = joi.object({
     keys.map(key => [key, joi.object({
       isDeleted: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
       isActive: joi.alternatives().try(joi.array().items(),joi.boolean(),joi.object()),
-      createdAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
-      updatedAt: joi.alternatives().try(joi.array().items(),joi.date().options({ convert: true }),joi.object()),
-      addedBy: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
-      updatedBy: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
       carId: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
       cleanerId: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),
       hub: joi.alternatives().try(joi.array().items(),joi.string().regex(/^[0-9a-fA-F]{24}$/),joi.object()),

@@ -26,6 +26,7 @@ const addHub = async (req, res) => {
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
+    dataToCreate.addedBy = req.user.id;
     dataToCreate = new Hub(dataToCreate);
     let createdHub = await dbService.create(Hub,dataToCreate);
     return res.success({ data : createdHub });
@@ -46,6 +47,12 @@ const bulkInsertHub = async (req,res)=>{
       return res.badRequest();
     }
     let dataToCreate = [ ...req.body.data ];
+    for (let i = 0;i < dataToCreate.length;i++){
+      dataToCreate[i] = {
+        ...dataToCreate[i],
+        addedBy: req.user.id
+      };
+    }
     let createdHubs = await dbService.create(Hub,dataToCreate);
     createdHubs = { count: createdHubs ? createdHubs.length : 0 };
     return res.success({ data:{ count:createdHubs.count || 0 } });
@@ -151,7 +158,10 @@ const getHubCount = async (req,res) => {
  */
 const updateHub = async (req,res) => {
   try {
-    let dataToUpdate = { ...req.body, };
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       hubSchemaKey.updateSchemaKeys
@@ -180,8 +190,12 @@ const bulkUpdateHub = async (req,res)=>{
   try {
     let filter = req.body && req.body.filter ? { ...req.body.filter } : {};
     let dataToUpdate = {};
+    delete dataToUpdate['addedBy'];
     if (req.body && typeof req.body.data === 'object' && req.body.data !== null) {
-      dataToUpdate = { ...req.body.data, };
+      dataToUpdate = { 
+        ...req.body.data,
+        updatedBy : req.user.id
+      };
     }
     let updatedHub = await dbService.updateMany(Hub,filter,dataToUpdate);
     if (!updatedHub){
@@ -204,7 +218,11 @@ const partialUpdateHub = async (req,res) => {
     if (!req.params.id){
       res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    let dataToUpdate = { ...req.body, };
+    delete req.body['addedBy'];
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       hubSchemaKey.updateSchemaKeys
@@ -235,7 +253,10 @@ const softDeleteHub = async (req,res) => {
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const updateBody = { isDeleted: true, };
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
     let updatedHub = await deleteDependentService.softDeleteHub(query, updateBody);
     if (!updatedHub){
       return res.recordNotFound();
@@ -316,7 +337,10 @@ const softDeleteManyHub = async (req,res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const updateBody = { isDeleted: true, };
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
     let updatedHub = await deleteDependentService.softDeleteHub(query, updateBody);
     if (!updatedHub) {
       return res.recordNotFound();

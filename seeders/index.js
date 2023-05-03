@@ -22,6 +22,7 @@ async function seedUser () {
       'isDeleted':false,
       'email':'Deshaun_Stamm@hotmail.com',
       'contact.phone':89292,
+      'isActive':true,
       'userType':authConstant.USER_TYPES.User
     };
     userToBeInserted.password = await  bcrypt.hash(userToBeInserted.password, 8);
@@ -31,6 +32,7 @@ async function seedUser () {
       'isDeleted':false,
       'email':'Josefina90@gmail.com',
       'contact.phone':73829,
+      'isActive':true,
       'userType':authConstant.USER_TYPES.Admin
     };
     userToBeInserted.password = await  bcrypt.hash(userToBeInserted.password, 8);
@@ -40,6 +42,7 @@ async function seedUser () {
       'isDeleted':false,
       'email':'Sarai.Flatley@yahoo.com',
       'contact.phone':66311,
+      'isActive':true,
       'userType':authConstant.USER_TYPES.Cleaner
     };
     userToBeInserted.password = await  bcrypt.hash(userToBeInserted.password, 8);
@@ -49,6 +52,7 @@ async function seedUser () {
       'isDeleted':false,
       'email':'Angelina.Lindgren@hotmail.com',
       'contact.phone':76847,
+      'isActive':true,
       'userType':authConstant.USER_TYPES.Hub
     };
     userToBeInserted.password = await  bcrypt.hash(userToBeInserted.password, 8);
@@ -3120,6 +3124,186 @@ async function seedRouteRole () {
       },
       {
         route: '/cleanerapp/api/v1/wash/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/cleanerapp/api/v1/notification/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/cleanerapp/api/v1/addonsbank/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/cleanerapp/api/v1/purchase/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -6604,6 +6788,186 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
+        route: '/userapp/api/v1/notification/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/notification/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/notification/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/notification/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/userapp/api/v1/notification/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/notification/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/notification/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/notification/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/notification/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/notification/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/notification/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/userapp/api/v1/notification/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/userapp/api/v1/addonsbank/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/purchase/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/purchase/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/purchase/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/purchase/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/userapp/api/v1/purchase/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/userapp/api/v1/purchase/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/purchase/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/purchase/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/purchase/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/purchase/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/userapp/api/v1/purchase/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/userapp/api/v1/purchase/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
         route: '/userapp/api/v1/banner/create',
         role: 'System_User',
         method: 'POST'
@@ -10080,6 +10444,186 @@ async function seedRouteRole () {
       },
       {
         route: '/dashboard/api/v1/wash/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/notification/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/notification/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/notification/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/notification/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/dashboard/api/v1/notification/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/notification/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/notification/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/notification/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/notification/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/notification/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/notification/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/dashboard/api/v1/notification/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/dashboard/api/v1/addonsbank/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/dashboard/api/v1/purchase/deletemany',
         role: 'System_User',
         method: 'POST'
       },
@@ -13564,6 +14108,186 @@ async function seedRouteRole () {
         method: 'POST'
       },
       {
+        route: '/admin/notification/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/notification/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/notification/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/notification/:id',
+        role: 'System_User',
+        method: 'GET'
+      },
+      {
+        route: '/admin/notification/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/notification/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/notification/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/notification/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/notification/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/notification/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/notification/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/notification/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/addonsbank/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/addonsbank/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/addonsbank/list',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/addonsbank/:id',
+        role: 'System_User',
+        method: 'GET' 
+      },
+      {
+        route: '/admin/addonsbank/count',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/addonsbank/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/addonsbank/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/addonsbank/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/addonsbank/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/addonsbank/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/addonsbank/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/addonsbank/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/purchase/create',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/purchase/addbulk',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
+        route: '/admin/purchase/list',
+        role: 'System_User',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/purchase/:id',
+        role: 'System_User',
+        method: 'GET' 
+      },
+      {
+        route: '/admin/purchase/count',
+        role: 'System_User',
+        method: 'POST' 
+      },
+      {
+        route: '/admin/purchase/update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/purchase/partial-update/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/purchase/updatebulk',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/purchase/softdelete/:id',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/purchase/softdeletemany',
+        role: 'System_User',
+        method: 'PUT'
+      },
+      {
+        route: '/admin/purchase/delete/:id',
+        role: 'System_User',
+        method: 'DELETE'
+      },
+      {
+        route: '/admin/purchase/deletemany',
+        role: 'System_User',
+        method: 'POST'
+      },
+      {
         route: '/admin/banner/create',
         role: 'System_User',
         method: 'POST' 
@@ -14124,7 +14848,7 @@ async function seedUserRole (){
     let user = {};
     const userRolesArr = [];
     userRoles.map(userRole => {
-      user = insertedUsers.find(user => user.username === userRole.username && user.isPasswordMatch(userRole.password) && !user.isDeleted);
+      user = insertedUsers.find(user => user.username === userRole.username && user.isPasswordMatch(userRole.password) && user.isActive && !user.isDeleted);
       if (user) {
         if (user.userType === authConstant.USER_TYPES.Admin){
           userRolesArr.push({

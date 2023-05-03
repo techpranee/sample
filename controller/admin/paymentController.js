@@ -26,6 +26,7 @@ const addPayment = async (req, res) => {
     if (!validateRequest.isValid) {
       return res.validationError({ message : `Invalid values in parameters, ${validateRequest.message}` });
     }
+    dataToCreate.addedBy = req.user.id;
     dataToCreate = new Payment(dataToCreate);
     let createdPayment = await dbService.create(Payment,dataToCreate);
     return res.success({ data : createdPayment });
@@ -46,6 +47,12 @@ const bulkInsertPayment = async (req,res)=>{
       return res.badRequest();
     }
     let dataToCreate = [ ...req.body.data ];
+    for (let i = 0;i < dataToCreate.length;i++){
+      dataToCreate[i] = {
+        ...dataToCreate[i],
+        addedBy: req.user.id
+      };
+    }
     let createdPayments = await dbService.create(Payment,dataToCreate);
     createdPayments = { count: createdPayments ? createdPayments.length : 0 };
     return res.success({ data:{ count:createdPayments.count || 0 } });
@@ -151,7 +158,10 @@ const getPaymentCount = async (req,res) => {
  */
 const updatePayment = async (req,res) => {
   try {
-    let dataToUpdate = { ...req.body, };
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       paymentSchemaKey.updateSchemaKeys
@@ -180,8 +190,12 @@ const bulkUpdatePayment = async (req,res)=>{
   try {
     let filter = req.body && req.body.filter ? { ...req.body.filter } : {};
     let dataToUpdate = {};
+    delete dataToUpdate['addedBy'];
     if (req.body && typeof req.body.data === 'object' && req.body.data !== null) {
-      dataToUpdate = { ...req.body.data, };
+      dataToUpdate = { 
+        ...req.body.data,
+        updatedBy : req.user.id
+      };
     }
     let updatedPayment = await dbService.updateMany(Payment,filter,dataToUpdate);
     if (!updatedPayment){
@@ -204,7 +218,11 @@ const partialUpdatePayment = async (req,res) => {
     if (!req.params.id){
       res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
-    let dataToUpdate = { ...req.body, };
+    delete req.body['addedBy'];
+    let dataToUpdate = {
+      ...req.body,
+      updatedBy:req.user.id,
+    };
     let validateRequest = validation.validateParamsWithJoi(
       dataToUpdate,
       paymentSchemaKey.updateSchemaKeys
@@ -235,7 +253,10 @@ const softDeletePayment = async (req,res) => {
       return res.badRequest({ message : 'Insufficient request parameters! id is required.' });
     }
     const query = { _id:req.params.id };
-    const updateBody = { isDeleted: true, };
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
     let updatedPayment = await deleteDependentService.softDeletePayment(query, updateBody);
     if (!updatedPayment){
       return res.recordNotFound();
@@ -316,7 +337,10 @@ const softDeleteManyPayment = async (req,res) => {
       return res.badRequest();
     }
     const query = { _id:{ $in:ids } };
-    const updateBody = { isDeleted: true, };
+    const updateBody = {
+      isDeleted: true,
+      updatedBy: req.user.id,
+    };
     let updatedPayment = await deleteDependentService.softDeletePayment(query, updateBody);
     if (!updatedPayment) {
       return res.recordNotFound();

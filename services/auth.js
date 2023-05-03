@@ -39,7 +39,7 @@ const sendSMSForLoginOtp = async (user) => {
     try {
         const where = { 
             _id:user.id,
-isDeleted: false,        }
+isActive: true,isDeleted: false,        }
         let otp = common.randomNumber();
         let expires = dayjs();
         expires = expires.add(6, "hour").toISOString();
@@ -71,7 +71,7 @@ isDeleted: false,        }
 const loginUser=async(username,password,platform,roleAccess) => {
         try {
             let where = {$or:[{email:username},{contact.phone:username}]}
-where.isDeleted = false;            let user = await dbService.findOne(User,where);
+where.isActive =  true;where.isDeleted = false;            let user = await dbService.findOne(User,where);
             if (user) {
                 if(user.loginRetryLimit >= MAX_LOGIN_RETRY_LIMIT){
                     let now = dayjs();
@@ -103,7 +103,7 @@ where.isDeleted = false;            let user = await dbService.findOne(User,wher
                         // send error
                         let expireTime = dayjs().add(LOGIN_REACTIVE_TIME,'minute');
                         await dbService.updateOne(User,
-                            { _id:user.id,isDeleted :false},
+                            { _id:user.id,isActive :true,isDeleted :false},
                             {
                             loginReactiveTime:expireTime.toISOString(),
                             loginRetryLimit:user.loginRetryLimit + 1 
@@ -118,7 +118,7 @@ where.isDeleted = false;            let user = await dbService.findOne(User,wher
                     const isPasswordMatched = await user.isPasswordMatch(password);
                     if (!isPasswordMatched) {
                         await dbService.updateOne(User,
-                        { _id:user.id,isDeleted : false},
+                        { _id:user.id,isActive :true,isDeleted : false},
                         {loginRetryLimit:user.loginRetryLimit+1});
                         return {flag:true,data:'Incorrect Password'}
                     }
@@ -182,7 +182,7 @@ const changePassword = async(params)=>{
         let oldPassword = params.oldPassword;
         let where = { 
             _id:params.userId,
-isDeleted: false,        }
+isActive: true,isDeleted: false,        }
         let user = await dbService.findOne(User,where);
         if (user && user.id) {
             let isPasswordMatch = await user.isPasswordMatch(oldPassword);
@@ -216,7 +216,7 @@ const sendResetPasswordNotification = async (user) => {
     try {
         let where = { 
             _id:user.id,
-isDeleted: false,        }
+isActive: true,isDeleted: false,        }
         let token = uuid();
         let expires = dayjs();
         expires = expires.add(FORGOT_PASSWORD_WITH.EXPIRE_TIME, "minute").toISOString();
@@ -274,7 +274,7 @@ const resetPassword = async (user, newPassword) => {
     try {
         let where = { 
             _id:user.id,
-isDeleted: false,        }
+isActive: true,isDeleted: false,        }
         const dbUser = await dbService.findOne(User,where);
         if (!dbUser) {
             return {
@@ -316,7 +316,7 @@ isDeleted: false,        }
 const sendLoginOTP = async (username) => {
     try {
         let where = {$or:[{email:username},{contact.phone:username}]}
-where.isDeleted = false;        let user = await dbService.findOne(User,where);
+where.isActive = true;where.isDeleted = false;        let user = await dbService.findOne(User,where);
         if(!user){
             return {flag:true, data:'User not found'}
         }
@@ -378,7 +378,7 @@ const loginWithOTP = async (username, password, platform,roleAccess) => {
         if (!result.flag) {
             const where = { 
                 _id:result.data.id,
-isDeleted: false,            }
+isActive: true,isDeleted: false,            }
             result.loginOTP=null;
             await dbService.updateOne(User,where,{ loginOTP: null });
         }
